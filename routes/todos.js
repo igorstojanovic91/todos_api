@@ -6,7 +6,7 @@ var db = require("../models") //requires automatically index file
 router.get("/", function(req, res) {
     db.Todo.find()
     .then(function(todo) {
-        res.json(todos);
+        res.status(201).json(todos); //201 in creaed
     })
     .catch(function(err) {
         res.send(err);
@@ -14,7 +14,13 @@ router.get("/", function(req, res) {
 })
 
 router.post("/", function(req, res) {
-    res.send("Hello from todo post route");
+    db.Todo.create(req.body)
+  .then(function(newTodo){
+      res.status(201).json(newTodo); //
+  })
+  .catch(function(err){
+      res.send(err);
+  })
 })
 
 
