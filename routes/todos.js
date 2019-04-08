@@ -13,5 +13,9 @@ router.get("/", function(req, res) {
     })
 })
 
+router.post("/", function(req, res) {
+    res.send("Hello from todo post route");
+})
+
 
 module.exports = router; //exports router
