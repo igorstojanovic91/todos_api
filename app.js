@@ -8,7 +8,7 @@ app.get("/", function(req, res) {
     res.send("Hello from root route"); //when here an object is plaed it is converted to JSON; use res.json({message: "Test"})
 })
 
-
+//establishing pattern for todo routes
 app.use("/api/todos", todoRoutes);
 
 //Starting up server
