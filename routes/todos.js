@@ -6,7 +6,7 @@ var db = require("../models") //requires automatically index file
 router.get("/", function(req, res) {
     db.Todo.find()
     .then(function(todo) {
-        res.status(201).json(todos); //201 in creaed
+        res.json(todo); //201 in creaed
     })
     .catch(function(err) {
         res.send(err);
@@ -21,6 +21,16 @@ router.post("/", function(req, res) {
   .catch(function(err){
       res.send(err);
   })
+})
+
+router.get("/:todoId", function(req, res) {
+    db.Todo.findById(req.params.todoId)
+    .then(function(foundTodo) {
+        res.json(foundTodo);
+    })
+    .catch(function(err) {
+        res.send(err);
+    })
 })
 
 
