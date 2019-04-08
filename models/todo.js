@@ -11,6 +11,10 @@ var todoSchema = new mongoose.Schema({
     },
     created_date: {
         type: Date,
-        default: Date.now()
+        default: Date.now
     }
 })
+
+var Todo = mongoose.Model("Todo", todoSchema);
+
+module.exports = Todo;
