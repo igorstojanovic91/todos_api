@@ -33,5 +33,15 @@ router.get("/:todoId", function(req, res) {
     })
 })
 
+router.put("/:todoId", function(req, res) {
+    db.Todo.findOneAndUpdate({_id: req.params.todoId}, req.body, {new: true}) //responds by default with old data, unless specified with {new: true}
+    .then(function(updateTodo) {
+        res.json(updateTodo);
+    })
+    .catch(function(err) {
+        res.send(err);
+    })
+})
+
 
 module.exports = router; //exports router
