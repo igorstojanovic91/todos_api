@@ -3,13 +3,16 @@ var express     = require('express'),
     mongoose    = require('mongoose'),
     bodyParser  = require("body-parser");
 
+//Initialiszing body parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}))
+app.use(express.static(__dirname + '/views'))
+
 
 var todoRoutes = require("./routes/todos")
 
 app.get("/", function(req, res) {
-    res.send("Hello from root route"); //when here an object is plaed it is converted to JSON; use res.json({message: "Test"})
+    res.sendFile("index.html"); //when here an object is plaed it is converted to JSON; use res.json({message: "Test"})
 })
 
 //establishing pattern for todo routes
