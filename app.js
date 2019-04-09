@@ -6,8 +6,8 @@ var express     = require('express'),
 //Initialiszing body parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}))
-app.use(express.static(__dirname + '/views'))
-
+app.use(express.static(__dirname + '/views')) //serve views/ directory
+app.use(express.static("public"))
 
 var todoRoutes = require("./routes/todos")
 
