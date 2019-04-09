@@ -13,9 +13,13 @@ XHR.send()
 
 function addTodos(todos) {
     //add todos to page here
-    todos.forEach(function(todo) {
+    todos.forEach(function(todo, index, arr) {
         var newTodo = "<li class='task'>" + todo.name + "</li>"
         document.querySelector(".list").innerHTML += newTodo;
+        if(todo.completed) {
+            console.log(document.querySelector("li:nth-of-type("+index+1+")").classList.add("done"))
+        }
+        console.log(todo.completed)
     })
 }
 
