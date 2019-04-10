@@ -42,6 +42,10 @@ function makeRequest(type, url, data) {
             }
         }
     }
+
+    if(type === "DELETE") {
+        XHR.open(type, url, true)
+    }
 }
 
 
@@ -49,18 +53,13 @@ function makeRequest(type, url, data) {
 function addTodos(todos) {
     //add todos to page here
     todos.forEach(function(todo, index, arr) {
-        var newTodo = "<li class='task'>" + todo.name + "<span>X</span></li>"
+        var newTodo = "<li data-id='"+ todo._id+ "'" + "class='task'>" + todo.name + "<span>X</span></li>" //adding data id for later referencing
         document.querySelector(".list").innerHTML += newTodo;
         if(todo.completed) {
             document.querySelector("li:nth-of-type("+index+1+")").classList.add("done");
         }
     })
-    var del = document.querySelectorAll("li span")
-    del.forEach(function(d) {
-        d.addEventListener("click", function() {
-            console.log("click");
-        })
-    })
+    addDeleteListener();
 }
 
 
@@ -68,4 +67,14 @@ function addTodos(todos) {
 function createTodo() {
     var userInput = document.querySelector("input").value 
     makeRequest("POST", "api/todos", {name: userInput});
+}
+
+function addDeleteListener() {
+    var del = document.querySelectorAll("li span")
+    del.forEach(function(d) { //adding clicklistener for every element
+        d.addEventListener("click", function() {
+            d.parentNode.parentNode.removeChild(d.parentNode);//removing element in the dom
+            console.log(d.parentNode.getAttribute("data-id"));
+        })
+    })
 }
