@@ -12,13 +12,14 @@ exports.getTodos = function(req, res) {
 }
 
 exports.createTodo = function(req, res) {
+    console.log("CREAETE TODO", req.body)
     db.Todo.create(req.body)
-  .then(function(newTodo){
-      res.status(201).json(newTodo); //
-  })
-  .catch(function(err){
-      res.send(err);
-  })
+    .then(function(newTodo){
+        res.status(201).json(newTodo); //
+    })
+    .catch(function(err){
+        res.send(err);
+    })
 }
 
 exports.getTodo = function(req, res) {

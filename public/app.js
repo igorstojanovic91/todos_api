@@ -1,15 +1,29 @@
-var XHR = new XMLHttpRequest();
+//Loading list
+makeRequest("GET", "api/todos")
 
-XHR.onreadystatechange = function() {
-    if(XHR.readyState == 4 && XHR.status == 200) {  
-        var data = JSON.parse(XHR.responseText); //takes the EUR rate -> ALWAYS PARSE FIRST!!!
-        addTodos(data)
-    } 
+function makeRequest(type, url, data) {
+    var XHR = new XMLHttpRequest();
+
+    if(type === "GET") {
+        XHR.open(type, url)
+        XHR.send()
+        XHR.onreadystatechange = function() {
+            if(XHR.readyState == 4 && XHR.status == 200) {  
+                var data = JSON.parse(XHR.responseText); //takes the EUR rate -> ALWAYS PARSE FIRST!!!
+                addTodos(data)
+            } 
+        }
+    }
+    if(type === "POST") {
+        XHR.open(type, url, true)
+        XHR.setRequestHeader('Content-type', "application/json"); //
+        XHR.send(JSON.stringify(data)); //makes data to string
+        XHR.onreadystatechange = function() {
+                console.log(XHR.responseText);
+        }
+
+    }
 }
-
-XHR.open("GET", "/api/todos")
-XHR.send()
-
 
 function addTodos(todos) {
     //add todos to page here
@@ -17,11 +31,26 @@ function addTodos(todos) {
         var newTodo = "<li class='task'>" + todo.name + "</li>"
         document.querySelector(".list").innerHTML += newTodo;
         if(todo.completed) {
-            console.log(document.querySelector("li:nth-of-type("+index+1+")").classList.add("done"))
+            document.querySelector("li:nth-of-type("+index+1+")").classList.add("done");
         }
-        console.log(todo.completed)
     })
 }
 
 
+
+
+
+
+
+//Adding new data with form
+var form = document.querySelector("#todoInput")
+form.addEventListener("keypress", function(event) {
+    if(event.which == 13) {
+        createTodo();
+    }
+})
   
+function createTodo() {
+    var userInput = document.querySelector("input").value
+    makeRequest("POST", "api/todos", {name: userInput});
+}
