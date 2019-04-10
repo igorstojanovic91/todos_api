@@ -71,11 +71,14 @@ header h2 {
 
 li span {
     float: right;
-    color: #c0392b;
-    transition: all 0.3s;
     opacity: 0;
+    transition: all 0.5s;
+    cursor: default;
 }
 
-li span:hover {
+.task:hover span {
     color: #e74c3c;
+    opacity: 1;
 }
+
+

@@ -1,14 +1,17 @@
-//Adding new data with form
+//Adding event listeners
 var form = document.querySelector("#todoInput")
+
+makeRequest("GET", "api/todos");
+
 form.addEventListener("keypress", function(event) {
     if(event.which == 13) {
         createTodo();
     }
 })
 
-//Loading list
-makeRequest("GET", "api/todos")
 
+
+//LOGIC
 function makeRequest(type, url, data) {
     var XHR = new XMLHttpRequest();
 
@@ -42,21 +45,26 @@ function makeRequest(type, url, data) {
 }
 
 
-
+//ADS TASK FOR EVERY ITEM
 function addTodos(todos) {
     //add todos to page here
     todos.forEach(function(todo, index, arr) {
-        var newTodo = "<li class='task'>" + todo.name + "</li>"
+        var newTodo = "<li class='task'>" + todo.name + "<span>X</span></li>"
         document.querySelector(".list").innerHTML += newTodo;
         if(todo.completed) {
             document.querySelector("li:nth-of-type("+index+1+")").classList.add("done");
         }
     })
+    var del = document.querySelectorAll("li span")
+    del.forEach(function(d) {
+        d.addEventListener("click", function() {
+            console.log("click");
+        })
+    })
 }
 
 
-
-  
+//GENERATES A POST REQUEST TO CREATE NEW TODO
 function createTodo() {
     var userInput = document.querySelector("input").value 
     makeRequest("POST", "api/todos", {name: userInput});
