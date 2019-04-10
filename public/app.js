@@ -45,6 +45,12 @@ function makeRequest(type, url, data) {
 
     if(type === "DELETE") {
         XHR.open(type, url, true)
+        XHR.send(JSON.stringify(data))
+        XHR.onreadystatechange = function() {
+            if(XHR.readyState == 3) {
+                console.log(XHR.responseText);
+            } 
+        }
     }
 }
 
@@ -74,7 +80,9 @@ function addDeleteListener() {
     del.forEach(function(d) { //adding clicklistener for every element
         d.addEventListener("click", function() {
             d.parentNode.parentNode.removeChild(d.parentNode);//removing element in the dom
-            console.log(d.parentNode.getAttribute("data-id"));
+            var clickedId = d.parentNode.getAttribute("data-id"); //Extracting ID
+            var deleteURL = "api/todos/" + clickedId;
+            makeRequest("DELETE", deleteURL)
         })
     })
 }
