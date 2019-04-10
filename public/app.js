@@ -1,3 +1,11 @@
+//Adding new data with form
+var form = document.querySelector("#todoInput")
+form.addEventListener("keypress", function(event) {
+    if(event.which == 13) {
+        createTodo();
+    }
+})
+
 //Loading list
 makeRequest("GET", "api/todos")
 
@@ -16,14 +24,24 @@ function makeRequest(type, url, data) {
     }
     if(type === "POST") {
         XHR.open(type, url, true)
-        XHR.setRequestHeader('Content-type', "application/json"); //
+        XHR.setRequestHeader('Content-type', "application/json"); //needed to post data
         XHR.send(JSON.stringify(data)); //makes data to string
         XHR.onreadystatechange = function() {
-                console.log(XHR.responseText);
-        }
+            if(XHR.status == 201 && XHR.readyState == 4) {
+                var data = [JSON.parse(XHR.responseText)]; //converting it to an array and JSON to pass it in addTodos function
+                addTodos(data);
+                document.querySelector("input").value = ""; //sets form back to empty string
 
+            }  else {
+                XHR.onerror = function () {
+                    console.log("** An error occurred during the transaction");
+                  }
+            }
+        }
     }
 }
+
+
 
 function addTodos(todos) {
     //add todos to page here
@@ -38,19 +56,8 @@ function addTodos(todos) {
 
 
 
-
-
-
-
-//Adding new data with form
-var form = document.querySelector("#todoInput")
-form.addEventListener("keypress", function(event) {
-    if(event.which == 13) {
-        createTodo();
-    }
-})
   
 function createTodo() {
-    var userInput = document.querySelector("input").value
+    var userInput = document.querySelector("input").value 
     makeRequest("POST", "api/todos", {name: userInput});
 }
