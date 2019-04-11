@@ -47,13 +47,20 @@ function makeRequest(type, url, data) {
         XHR.open(type, url, true)
         XHR.send(JSON.stringify(data))
         XHR.onreadystatechange = function() {
+        }
+    }
+
+    if (type === "PUT") {
+        XHR.open(type, url, true)
+        XHR.setRequestHeader('Content-type','application/json   ; charset=utf-8'); //needed to post data
+        XHR.send(JSON.stringify(data))
+        XHR.onreadystatechange = function() {
             if(XHR.readyState == 3) {
                 console.log(XHR.responseText);
             } 
         }
     }
 }
-
 
 //ADS TASK FOR EVERY ITEM
 function addTodos(todos) {
@@ -62,10 +69,11 @@ function addTodos(todos) {
         var newTodo = "<li data-id='"+ todo._id+ "'" + "class='task'>" + todo.name + "<span>X</span></li>" //adding data id for later referencing
         document.querySelector(".list").innerHTML += newTodo;
         if(todo.completed) {
-            document.querySelector("li:nth-of-type("+index+1+")").classList.add("done");
+            document.querySelector("li:nth-of-type("+(Number(index)+1)+")").classList.add("done");
         }
     })
     addDeleteListener();
+    addUpdateListener()
 }
 
 
@@ -73,6 +81,24 @@ function addTodos(todos) {
 function createTodo() {
     var userInput = document.querySelector("input").value 
     makeRequest("POST", "api/todos", {name: userInput});
+}
+
+function addUpdateListener() {
+    var update = document.querySelectorAll("li");
+    update.forEach(function(u) {
+        u.addEventListener("click", function(){            
+            u.classList.toggle("done")
+            var clickedId = u.getAttribute("data-id"); //Extracting ID
+            
+            var complete = false;
+            if (u.classList.length > 1) {
+                complete = true;
+            }
+            
+            var updateURL = "api/todos/" + clickedId;
+            makeRequest("PUT", updateURL, {completed: complete});
+        })
+    })
 }
 
 function addDeleteListener() {
